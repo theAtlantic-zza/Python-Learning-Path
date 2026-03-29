@@ -19,7 +19,7 @@ Return -1, if needle is not part of haystack.
 #Things to remember
 #切片 slice: string[start : end]--->start:inclusive; end:exclusive 有前无后 左闭右开
 
-#Time Complexity:O((n - m + 1) * m) ≈ O(n * m)
+#Time Complexity:O((n - m + 1) * m) ≈ O(n * m)      StandardSolution:O(n+m)
 #Space Complexity:O(m)
 
 
