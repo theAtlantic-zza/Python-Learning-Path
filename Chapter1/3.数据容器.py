@@ -1,6 +1,5 @@
 #变量可存储数据,但是一次只能存储一个数据
 # 定义一种可以容纳多份数据的数据类型(容器).容纳的每份数据称之为一个元素,每个元素可以是任意类型的数据(str,bool)
-from multiprocessing.managers import ListProxy
 
 #1.列表list 一次性可存储多个元素
 #1.1定义:列表名称 = [元素1,元素2,] 可存储不同类型,元素可重复,有顺序
@@ -39,10 +38,9 @@ print(s[:5])
 #     sort()对列表进行排序 s.sort() 列表元素的数据类型一致,才可以进行排序
 #     reverse()反转列表元素 s.reverse()
 
-s = [56,90,88,65,90,100,209,72,145]
-s.append(188)
+s = [56, 90, 88, 65, 90, 100, 209, 72, 145, 188]
 print(s)
-s.insert(2,188)
+s.insert(3,188)
 print(s)
 s.remove(90)
 print(s)
@@ -230,14 +228,14 @@ print(a,b,c,d)
 print(x,y,z)
 print(o,e)#如果此处e前有*,相当于把e列表中所有元素拆包,输出结果会变成1 2 3 4 print接收到4个独立参数,默认用空格把它们连起来打印
 
-#3.3 Q&A
+#3.34 Q&A
 # t1 = (1, 2)
 # a, b, c = t1 这里有3个变量，但元组只有2个值 ValueError: not enough values to unpack (expected 3, got 2)
 t = (1, 2)
 a, b, *c = t
 print(a, b, c) # 输出：1 2 []
 
-#3.3 review previous example
+#3.35 review previous example
 #现有两个变量a=10,b=20,现需要交换两变量的值,然后输出到控制台
 a=10
 b=20

@@ -161,7 +161,7 @@ print('0.1 + 10 / 4 ** 2 =',0.1 + 10 / 4 ** 2 )#加()更改运算顺序
 
 #练习3 输入圆的半径,计算周长及面积
 
-import math #导入数学模块，用于用Pi计算圆的周长和面积 math是python自带的数据库
+#import math #导入数学模块，用于用Pi计算圆的周长和面积 math是python自带的数据库
 
 # r = float(input("请输入圆的半径："))
 # circumference = 2 * math.pi * r
