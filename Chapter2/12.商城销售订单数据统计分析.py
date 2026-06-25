@@ -37,14 +37,14 @@ def load_orders(csv_path: Path) -> pd.DataFrame:
     # CSV 列名两边可能有看不见的空格；str.strip() 去掉前后空格，保险动作。
     data.columns = data.columns.str.strip()
 
-    # ⚠️ 异常值过滤：单价或销售数量 ≤ 0 视为录入错误（比如 PPT 截图里第 7 行袜子 -29）。
+    # 异常值过滤：单价或销售数量 ≤ 0 视为录入错误（比如 PPT 截图里第 7 行袜子 -29）。
     # 用布尔索引取交集：两个条件都满足才保留。~ 表示按位取反，用来找被剔除的行做日志
     bad_rows = data[(data["销售数量"] <= 0) | (data["单价"] <= 0)]
     if len(bad_rows) > 0:
-        print(f"⚠️  过滤掉 {len(bad_rows)} 条异常订单（销售数量或单价 ≤ 0）")
+        print(f" 过滤掉 {len(bad_rows)} 条异常订单（销售数量或单价 ≤ 0）")
     data = data[(data["销售数量"] > 0) & (data["单价"] > 0)].copy()
 
-    # ⚠️ 日期统一：CSV 里大多数是 "2025-06-02"，但混入了 "2025/06/02" 这种斜杠格式。
+    # 日期统一：CSV 里大多数是 "2025-06-02"，但混入了 "2025/06/02" 这种斜杠格式。
     # 直接按字符串 groupby 会把它们当成两天 —— pd.to_datetime 能识别两种格式，转完都是同一天。
     # format="mixed" 让 pandas 对每行自由推断格式（pandas 2.0+ 支持）。
     data["订单日期"] = pd.to_datetime(data["订单日期"], format="mixed")
