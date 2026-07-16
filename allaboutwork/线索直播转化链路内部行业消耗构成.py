@@ -206,7 +206,6 @@ plt.show()
 
 # ==============================
 # CTR、CTCVR 哑铃图
-# 接在环形图的 plt.show() 后面
 # ==============================
 
 import numpy as np
@@ -415,4 +414,165 @@ plot_dumbbell_chart(
     title="各行业不同转化链路 CTCVR 对比",
     output_file="各行业不同转化链路CTCVR对比.png",
     x_max=70
+)
+
+from matplotlib.ticker import FuncFormatter
+
+
+def format_spend(value):
+    """
+    将以万元为单位的消耗格式化为更容易阅读的金额。
+    """
+    if value >= 10000:
+        return f"{value / 10000:.2f}亿元"
+    elif value >= 100:
+        return f"{value:,.0f}万元"
+    else:
+        return f"{value:,.1f}万元"
+
+
+def plot_industry_ctr_by_chain(
+    data,
+    chain,
+    title,
+    output_file,
+    bar_color
+):
+    """
+    固定一条转化链路，对比不同行业的 CTR。
+    柱尾同时标注 CTR 和消耗规模。
+    """
+
+    # 1. 筛选指定链路并按照 CTR 从低到高排序
+    plot_df = (
+        data[data["链路"] == chain]
+        .copy()
+        .sort_values("CTR", ascending=True)
+    )
+
+    # 2. 计算行业 CTR 最大差异
+    ctr_max = plot_df["CTR"].max()
+    ctr_min = plot_df["CTR"].min()
+    ctr_gap = ctr_max - ctr_min
+
+    # 3. 创建画布
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+
+    # 4. 绘制横向柱状图
+    bars = ax.barh(
+        plot_df["行业"].astype(str),
+        plot_df["CTR"],
+        height=0.55,
+        color=bar_color,
+        alpha=0.88
+    )
+
+    # 5. 在柱子右侧标注 CTR 和消耗
+    for bar, ctr, spend in zip(
+        bars,
+        plot_df["CTR"],
+        plot_df["消耗_万元"]
+    ):
+        ax.annotate(
+            f"{ctr:.2f}%  ｜  消耗 {format_spend(spend)}",
+            xy=(bar.get_width(), bar.get_y() + bar.get_height() / 2),
+            xytext=(10, 0),
+            textcoords="offset points",
+            ha="left",
+            va="center",
+            fontsize=11
+        )
+
+    # 6. 横轴显示百分号
+    ax.xaxis.set_major_formatter(
+        FuncFormatter(lambda value, position: f"{value:g}%")
+    )
+
+    # 给右侧标签预留空间
+    ax.set_xlim(0, ctr_max * 1.55)
+
+    ax.set_xlabel("CTR（%）", fontsize=12)
+    ax.set_ylabel("行业", fontsize=12)
+
+    # 7. 标题
+    ax.set_title(
+        title,
+        fontsize=18,
+        pad=30
+    )
+
+    # 8. 标题下方显示行业差异
+    ax.text(
+        0.5,
+        1.015,
+        f"行业最高与最低相差 {ctr_gap:.2f} 个百分点",
+        transform=ax.transAxes,
+        ha="center",
+        va="bottom",
+        fontsize=11,
+        color="#666666"
+    )
+
+    # 9. 网格及边框
+    ax.grid(
+        axis="x",
+        linestyle="--",
+        alpha=0.25
+    )
+
+    ax.set_axisbelow(True)
+
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+
+    ax.tick_params(axis="y", length=0, labelsize=12)
+    ax.tick_params(axis="x", labelsize=10)
+
+    # 消耗只能近似反映样本规模，因此增加口径提示
+    fig.text(
+        0.5,
+        0.015,
+        "消耗用于辅助判断数据规模，CTR 稳定性仍需结合曝光量、点击量及投放客户数验证。",
+        ha="center",
+        fontsize=9.5,
+        color="#777777"
+    )
+
+    plt.tight_layout(rect=[0, 0.05, 1, 0.96])
+
+    # 10. 先保存，再显示
+    fig.savefig(
+        output_file,
+        dpi=300,
+        bbox_inches="tight",
+        facecolor="white"
+    )
+
+    plt.show()
+
+
+# ==============================
+# 图一：企业微信链路，各行业 CTR 对比
+# ==============================
+
+plot_industry_ctr_by_chain(
+    data=df,
+    chain="二跳企业微信",
+    title="二跳企业微信链路：各行业 CTR 对比",
+    output_file="二跳企业微信链路各行业CTR对比.png",
+    bar_color="#2F80ED"
+)
+
+
+# ==============================
+# 图二：手机号链路，各行业 CTR 对比
+# ==============================
+
+plot_industry_ctr_by_chain(
+    data=df,
+    chain="手机号码授权/拨打",
+    title="手机号码授权拨打链路：各行业 CTR 对比",
+    output_file="手机号码授权拨打链路各行业CTR对比.png",
+    bar_color="#F2994A"
 )
