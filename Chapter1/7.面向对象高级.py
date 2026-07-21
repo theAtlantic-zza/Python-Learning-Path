@@ -1,5 +1,8 @@
 """封装:把数据(属性)和操作数据的函数(方法)捆绑在一起,形成一个独立的单元(类),并隐藏内部的实现细节,只对外暴露必要的功能(方法)
 """
+from random import choice
+
+
 # 面向对象：类属性、实例属性、私有属性、私有方法
 
 #7.1 私有属性 私有方法
@@ -216,7 +219,7 @@ class Member(ABC):
     def __init__(self,member_id,name, password):
         self.member_id = member_id #会员卡号
         self.name = name  #会员姓名
-        self.password = password  #会员密码
+        self.__password = password  #会员密码
         self.__borrowed_books = []  #已借阅书籍列表
 
     def borrow_book(self,book:Book): #借阅书籍
@@ -297,3 +300,93 @@ class LlibrarySystem:
                 elif member["id"].startswith("V"):
                     self.members[member["id"]] = VIPMember(member["id"], member["name"], member["password"],member["vip_level"])
                 print("加载会员数据成功！")
+
+    def login(self):#登录
+        while True:
+            print("登录")
+            member_id = input('请输入会员卡号:  ')
+            password = input('请输入会员密码: ')
+
+            #判断会员卡号是否存在
+            if member_id not in self.members:
+                print('登录失败,会员卡号不存在!')
+                continue
+
+            #判断密码是否正确
+            member = self.members[member_id]
+            if member.get_password() == password:
+                print(f'Login Success,Welcome {member.name}!')
+                self.current_members = member
+                return True
+            else:
+                print('Login Fail, Wrong Password!')
+                continue
+
+    def borrow_book(self):
+        #1.展示当前图书馆的图书列表
+        for book in self.books.values():
+            print(f'编号:{book.book_id},标题:{book.title},作者:{book.author},总数:{book.total_num},可用:{book.get_available_num()}')
+
+        #2.获取用户输入的图书编号,执行借书操作
+        book_id = input('请输入要借阅的图书编号')
+        if book_id not in self.books:
+            print('借书失败,图书编号不存在!')
+            return
+        self.current_members.borrow_book(self.books[book_id])
+
+    def return_book(self):  # 归还图书
+        borrowed_books = self.current_members.get_borrowed_books()
+
+        if len(borrowed_books) == 0:
+            print("您当前没有借阅任何图书！")
+            return
+
+        print("【已经借阅的图书列表：】")
+        for book in borrowed_books:
+            print(f"编号：{book.book_id}，标题：{book.title}")
+
+        book_id = input("请输入要归还的图书编号：").strip()
+
+        if book_id not in self.books:
+            print("还书失败，图书编号不存在！")
+            return
+
+        self.current_members.return_book(self.books[book_id])
+
+    def show_borrowed_books(self):  # 查看借阅
+        borrowed_books = self.current_members.get_borrowed_books()
+
+        if len(borrowed_books) > 0:
+            print("【已经借阅的图书列表：】")
+
+            for book in borrowed_books:
+                print(f"编号：{book.book_id}，标题：{book.title}")
+        else:
+            print("您没有借阅任何图书！")
+
+    def run(self):
+        if self.login():
+            while True:
+                print('\n1.借阅图书')
+                print('2.归还图书')
+                print('3.查看借阅图书')
+
+                choice = input('请选择操作(1-4):  ')
+                match choice:
+                    case '1':
+                        self.borrow_book()
+                    case '2':
+                        self.return_book()
+                    case '3':
+                        self.show_borrowed_books()
+                    case '4':
+                        print('Log out, Bye')
+                        break
+                    case _:
+                        print('无效选项,重新选择')
+
+
+if __name__ == '__main__':
+    ls = LlibrarySystem()
+    ls.run()
+

@@ -1,62 +1,62 @@
 [
-    {
-        "编号": "AI001",
-        "标题": "LangChain入门与实践",
-        "作者": "李智慧",
-        "数量": 8
-    },
-    {
-        "编号": "AI002",
-        "标题": "LangGraph构建智能Agent",
-        "作者": "王浩帆",
-        "数量": 5
-    },
-    {
-        "编号": "AI003",
-        "标题": "MCP协议从零实战",
-        "作者": "张子轩",
-        "数量": 6
-    },
-    {
-        "编号": "AI004",
-        "标题": "大模型Tool Calling开发指南",
-        "作者": "刘明远",
-        "数量": 7
-    },
-    {
-        "编号": "AI005",
-        "标题": "RAG技术与应用",
-        "作者": "赵子涵",
-        "数量": 10
-    },
-    {
-        "编号": "AI006",
-        "标题": "Prompt Engineering权威指南",
-        "作者": "孙一凡",
-        "数量": 12
-    },
-    {
-        "编号": "AI007",
-        "标题": "向量数据库实战",
-        "作者": "陈思琪",
-        "数量": 4
-    },
-    {
-        "编号": "AI008",
-        "标题": "Transformer架构深度解析",
-        "作者": "吴宇轩",
-        "数量": 6
-    },
-    {
-        "编号": "AI009",
-        "标题": "大模型微调技术详解",
-        "作者": "林语晨",
-        "数量": 9
-    },
-    {
-        "编号": "AI010",
-        "标题": "Agentic Workflow设计模式",
-        "作者": "郭子睿",
-        "数量": 5
-    }
+  {
+    "id": "AI001",
+    "title": "LangChain入门与实践",
+    "author": "李智慧",
+    "total_num": 8
+  },
+  {
+    "id": "AI002",
+    "title": "LangGraph构建智能Agent",
+    "author": "王浩帆",
+    "total_num": 5
+  },
+  {
+    "id": "AI003",
+    "title": "MCP协议从零实战",
+    "author": "张子轩",
+    "total_num": 6
+  },
+  {
+    "id": "AI004",
+    "title": "大模型Tool Calling开发指南",
+    "author": "刘明远",
+    "total_num": 7
+  },
+  {
+    "id": "AI005",
+    "title": "RAG技术与应用",
+    "author": "赵子涵",
+    "total_num": 10
+  },
+  {
+    "id": "AI006",
+    "title": "Prompt Engineering权威指南",
+    "author": "孙一凡",
+    "total_num": 12
+  },
+  {
+    "id": "AI007",
+    "title": "向量数据库实战",
+    "author": "陈思琪",
+    "total_num": 4
+  },
+  {
+    "id": "AI008",
+    "title": "Transformer架构深度解析",
+    "author": "吴宇轩",
+    "total_num": 6
+  },
+  {
+    "id": "AI009",
+    "title": "大模型微调技术详解",
+    "author": "林语晨",
+    "total_num": 9
+  },
+  {
+    "id": "AI010",
+    "title": "Agentic Workflow设计模式",
+    "author": "郭子睿",
+    "total_num": 5
+  }
 ]
