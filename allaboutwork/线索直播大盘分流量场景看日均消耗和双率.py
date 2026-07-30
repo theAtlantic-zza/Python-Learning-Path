@@ -7,8 +7,6 @@ from matplotlib.ticker import FuncFormatter
 # =========================
 data = [
     # 月份, 流量场景, 日均消耗（元）, CTR（%）, CTCVR（‰）
-    ["2025/11", "微信公众号与小程序", 589112.03, 2.01, 101.20],
-    ["2025/12", "微信公众号与小程序", 664977.41, 1.59, 89.11],
     ["2026/01", "微信公众号与小程序", 638800.95, 2.34, 50.69],
     ["2026/02", "微信公众号与小程序", 282441.87, 2.24, 45.45],
     ["2026/03", "微信公众号与小程序", 628048.82, 2.02, 108.77],
@@ -16,8 +14,6 @@ data = [
     ["2026/05", "微信公众号与小程序", 1443671.53, 2.10, 44.64],
     ["2026/06", "微信公众号与小程序", 1849446.18, 2.05, 42.02],
 
-    ["2025/11", "微信视频号", 1763095.54, 1.08, 62.96],
-    ["2025/12", "微信视频号", 1776107.29, 1.12, 58.85],
     ["2026/01", "微信视频号", 2603531.70, 1.39, 43.99],
     ["2026/02", "微信视频号", 1154167.68, 1.34, 35.26],
     ["2026/03", "微信视频号", 1831221.57, 1.20, 41.94],
@@ -25,8 +21,6 @@ data = [
     ["2026/05", "微信视频号", 1985679.44, 0.96, 41.24],
     ["2026/06", "微信视频号", 2290320.00, 0.93, 33.75],
 
-    ["2025/11", "微信朋友圈", 556303.76, 0.56, 20.55],
-    ["2025/12", "微信朋友圈", 452433.65, 0.67, 14.33],
     ["2026/01", "微信朋友圈", 568998.98, 0.85, 12.23],
     ["2026/02", "微信朋友圈", 393852.58, 1.04, 6.80],
     ["2026/03", "微信朋友圈", 696924.89, 0.76, 13.50],
@@ -41,7 +35,7 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11", "2025/12", "2026/01", "2026/02",
+    "2026/01", "2026/02",
     "2026/03", "2026/04", "2026/05", "2026/06"
 ]
 
@@ -99,19 +93,22 @@ chart_config = [
         "column": "日均消耗_万元",
         "title": "日均消耗变化",
         "ylabel": "日均消耗（万元/日）",
-        "formatter": FuncFormatter(lambda x, _: f"{x:,.0f}")
+        "formatter": FuncFormatter(lambda x, _: f"{x:,.0f}"),
+        "label_fmt": lambda v: f"{v:,.0f}"
     },
     {
         "column": "CTR_pct",
         "title": "模型 CTR 变化",
         "ylabel": "CTR（%）",
-        "formatter": FuncFormatter(lambda x, _: f"{x:.1f}%")
+        "formatter": FuncFormatter(lambda x, _: f"{x:.1f}%"),
+        "label_fmt": lambda v: f"{v:.2f}%"
     },
     {
         "column": "CTCVR_permille",
         "title": "CTCVR 变化",
         "ylabel": "CTCVR（‰）",
-        "formatter": FuncFormatter(lambda x, _: f"{x:.0f}‰")
+        "formatter": FuncFormatter(lambda x, _: f"{x:.0f}‰"),
+        "label_fmt": lambda v: f"{v:.1f}‰"
     }
 ]
 
@@ -123,7 +120,7 @@ x = range(len(month_order))
 # =========================
 for ax, config in zip(axes, chart_config):
 
-    for scene in scene_order:
+    for idx, scene in enumerate(scene_order):
         scene_df = (
             df[df["流量场景"] == scene]
             .set_index("月份")
@@ -143,6 +140,53 @@ for ax, config in zip(axes, chart_config):
             markeredgewidth=1.5,
             zorder=3
         )
+
+        # 3条线轮流上/下错位
+        offset_y = 11 if idx % 2 == 0 else -13
+        va = "bottom" if offset_y > 0 else "top"
+        # 数据标签
+        for xi, yi in zip(x, scene_df[config["column"]]):
+            if pd.isna(yi):
+                continue
+            ax.annotate(
+                config["label_fmt"](yi),
+                xy=(xi, yi),
+                xytext=(0, offset_y),
+                textcoords="offset points",
+                ha="center",
+                va=va,
+                fontsize=8,
+                color=colors[scene],
+                bbox=dict(
+                    boxstyle="round,pad=0.12",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=4
+            )
+
+        # 数据标签
+        for xi, yi in zip(x, scene_df[config["column"]]):
+            if pd.isna(yi):
+                continue
+            ax.annotate(
+                config["label_fmt"](yi),
+                xy=(xi, yi),
+                xytext=(0, 10),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=8.5,
+                color=colors[scene],
+                bbox=dict(
+                    boxstyle="round,pad=0.15",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=4
+            )
 
     ax.set_title(
         config["title"],

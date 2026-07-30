@@ -7,23 +7,19 @@ from matplotlib.ticker import FuncFormatter, MaxNLocator
 # =========================
 data = [
     # 月份, 优化目标, 日均消耗（元）, CTR（%）, CTCVR（‰）
-    ["2025/11", "加企微微信客服", 762225.32, 2.80, 10.05],
-    ["2025/12", "加企微微信客服", 994360.73, 2.44, 7.93],
-    ["2026/01", "加企微微信客服", 2320731.50, 2.38, 7.45],
-    ["2026/02", "加企微微信客服", 969663.48, 2.53, 5.69],
-    ["2026/03", "加企微微信客服", 1225048.62, 2.52, 5.32],
-    ["2026/04", "加企微微信客服", 1603426.49, 2.38, 3.79],
-    ["2026/05", "加企微微信客服", 2072005.51, 2.43, 3.79],
-    ["2026/06", "加企微微信客服", 2790653.93, 2.35, 3.90],
+    ["2026/01", "412加企微微信客服", 2320731.50, 2.38, 7.45],
+    ["2026/02", "412加企微微信客服", 969663.48, 2.53, 5.69],
+    ["2026/03", "412加企微微信客服", 1225048.62, 2.52, 5.32],
+    ["2026/04", "412加企微微信客服", 1603426.49, 2.38, 3.79],
+    ["2026/05", "412加企微微信客服", 2072005.51, 2.43, 3.79],
+    ["2026/06", "412加企微微信客服", 2790653.93, 2.35, 3.90],
 
-    ["2025/11", "表单预约", 10909.57, 4.75, 1.67],
-    ["2025/12", "表单预约", 11165.90, 4.65, 3.67],
-    ["2026/01", "表单预约", 14660.42, 3.59, 2.34],
-    ["2026/02", "表单预约", 19270.57, 2.07, 1.87],
-    ["2026/03", "表单预约", 36579.45, 1.79, 2.02],
-    ["2026/04", "表单预约", 63613.81, 1.57, 2.34],
-    ["2026/05", "表单预约", 82122.21, 1.32, 1.91],
-    ["2026/06", "表单预约", 124162.84, 1.19, 1.67],
+    ["2026/01", "405表单预约", 14660.42, 3.59, 2.34],
+    ["2026/02", "405表单预约", 19270.57, 2.07, 1.87],
+    ["2026/03", "405表单预约", 36579.45, 1.79, 2.02],
+    ["2026/04", "405表单预约", 63613.81, 1.57, 2.34],
+    ["2026/05", "405表单预约", 82122.21, 1.32, 1.91],
+    ["2026/06", "405表单预约", 124162.84, 1.19, 1.67],
 ]
 
 df = pd.DataFrame(
@@ -38,13 +34,13 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11", "2025/12", "2026/01", "2026/02",
+    "2026/01", "2026/02",
     "2026/03", "2026/04", "2026/05", "2026/06"
 ]
 
 target_order = [
-    "加企微微信客服",
-    "表单预约"
+    "412加企微微信客服",
+    "405表单预约"
 ]
 
 df["月份"] = pd.Categorical(
@@ -73,8 +69,8 @@ plt.rcParams["font.sans-serif"] = [
 plt.rcParams["axes.unicode_minus"] = False
 
 colors = {
-    "加企微微信客服": "#0072B2",
-    "表单预约": "#D55E00"
+    "412加企微微信客服": "#0072B2",
+    "405表单预约": "#D55E00"
 }
 
 x = list(range(len(month_order)))
@@ -142,6 +138,39 @@ def draw_lines(ax, column):
             markeredgewidth=1.5,
             zorder=3
         )
+
+
+def add_labels(ax, column, label_fmt):
+    y_min, y_max = ax.get_ylim()
+    for idx, target in enumerate(target_order):
+        target_df = (
+            df[df["优化目标"] == target]
+            .set_index("月份")
+            .reindex(month_order)
+        )
+        # 两条线轮流上下错位
+        offset_y = 11 if idx % 2 == 0 else -13
+        va = "bottom" if offset_y > 0 else "top"
+        for xi, yi in zip(x, target_df[column]):
+            if pd.isna(yi) or yi < y_min or yi > y_max:
+                continue
+            ax.annotate(
+                label_fmt(yi),
+                xy=(xi, yi),
+                xytext=(0, offset_y),
+                textcoords="offset points",
+                ha="center",
+                va=va,
+                fontsize=8.5,
+                color=colors[target],
+                bbox=dict(
+                    boxstyle="round,pad=0.15",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=4
+            )
 
 
 def style_axis(ax):
@@ -275,6 +304,14 @@ ax_spend_low.text(
     color="#777777"
 )
 
+spend_label_fmt = lambda v: f"{v:.1f}"
+add_labels(ax_spend_high, "日均消耗_万元", spend_label_fmt)
+add_labels(ax_spend_low, "日均消耗_万元", spend_label_fmt)
+
+spend_label_fmt = lambda v: f"{v:.1f}"
+add_labels(ax_spend_high, "日均消耗_万元", spend_label_fmt)
+add_labels(ax_spend_low, "日均消耗_万元", spend_label_fmt)
+
 
 # =========================
 # 6. CTR趋势
@@ -309,6 +346,10 @@ ax_ctr.tick_params(
     labelbottom=False
 )
 
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
 
 # =========================
 # 7. CTCVR趋势
@@ -337,6 +378,8 @@ ax_ctcvr.yaxis.set_major_locator(
 ax_ctcvr.yaxis.set_major_formatter(
     FuncFormatter(lambda value, _: f"{value:.1f}‰")
 )
+
+add_labels(ax_ctcvr, "CTCVR_permille", lambda v: f"{v:.2f}‰")
 
 
 # =========================

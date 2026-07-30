@@ -11,8 +11,6 @@ data = [
     # 月份, 优化目标, 日均消耗（元）, CTR（%）, CTCVR（‰）
 
     # 405 表单预约
-    ["2025/11", "405", 202877.91, 1.63, 4.42],
-    ["2025/12", "405", 410997.92, 1.78, 7.85],
     ["2026/01", "405", 305432.59, 1.67, 2.73],
     ["2026/02", "405", 213545.30, 1.27, 1.12],
     ["2026/03", "405", 312354.39, 1.39, 1.38],
@@ -21,8 +19,6 @@ data = [
     ["2026/06", "405", 350410.54, 1.36, 1.32],
 
     # 0 异常数据
-    ["2025/11", "0", 234478.53, 0.50, np.nan],
-    ["2025/12", "0", 111506.81, 0.52, np.nan],
     ["2026/01", "0", 94923.30, 0.64, np.nan],
     ["2026/02", "0", 33441.78, 0.66, np.nan],
     ["2026/03", "0", 194312.89, 0.47, np.nan],
@@ -31,8 +27,6 @@ data = [
     ["2026/06", "0", 169520.37, 0.46, np.nan],
 
     # 301 关键页面访问
-    ["2025/11", "301", 223009.81, 0.96, 89.53],
-    ["2025/12", "301", 119329.45, 1.06, 101.05],
     ["2026/01", "301", 88233.02, 1.08, 101.72],
     ["2026/02", "301", 43668.95, 1.20, 115.27],
     ["2026/03", "301", 103673.15, 1.42, 135.74],
@@ -41,8 +35,6 @@ data = [
     ["2026/06", "301", 112135.59, 1.34, 124.11],
 
     # 7 点击
-    ["2025/11", "7", 169235.11, 1.20, np.nan],
-    ["2025/12", "7", 61059.50, 0.68, np.nan],
     ["2026/01", "7", 40499.77, 1.64, np.nan],
     ["2026/02", "7", 13698.99, 1.36, np.nan],
     ["2026/03", "7", 107353.09, 1.00, np.nan],
@@ -63,7 +55,7 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11", "2025/12", "2026/01", "2026/02",
+    "2026/01", "2026/02",
     "2026/03", "2026/04", "2026/05", "2026/06"
 ]
 
@@ -266,6 +258,41 @@ def draw_lines(ax, column, targets):
         )
 
 
+def add_labels(ax, column, targets, label_fmt):
+    y_min, y_max = ax.get_ylim()
+    offset_table = [(11, "bottom"), (-13, "top"), (11, "bottom"), (-13, "top")]
+    for idx, target in enumerate(targets):
+        target_df = (
+            df[df["优化目标"] == target]
+            .set_index("月份")
+            .reindex(month_order)
+        )
+        values = target_df[column]
+        if values.notna().sum() == 0:
+            continue
+        offset_y, va = offset_table[idx % 4]
+        for xi, yi in zip(x, values):
+            if pd.isna(yi) or yi < y_min or yi > y_max:
+                continue
+            ax.annotate(
+                label_fmt(yi),
+                xy=(xi, yi),
+                xytext=(0, offset_y),
+                textcoords="offset points",
+                ha="center",
+                va=va,
+                fontsize=8,
+                color=colors[target],
+                bbox=dict(
+                    boxstyle="round,pad=0.12",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=6
+            )
+
+
 def style_axis(ax):
     ax.grid(
         axis="y",
@@ -336,6 +363,10 @@ ax_spend.tick_params(
     labelbottom=False
 )
 
+add_labels(ax_spend, "日均消耗_万元", target_order, lambda v: f"{v:.1f}")
+
+add_labels(ax_spend, "日均消耗_万元", target_order, lambda v: f"{v:.1f}")
+
 
 # =========================
 # 7. CTR
@@ -377,6 +408,10 @@ ax_ctr.tick_params(
     axis="x",
     labelbottom=False
 )
+
+add_labels(ax_ctr, "CTR_pct", target_order, lambda v: f"{v:.2f}%")
+
+add_labels(ax_ctr, "CTR_pct", target_order, lambda v: f"{v:.2f}%")
 
 
 # =========================
@@ -446,6 +481,10 @@ ax_ctcvr_high.tick_params(
     bottom=False,
     labelbottom=False
 )
+
+ctcvr_label_fmt = lambda v: f"{v:.1f}‰"
+add_labels(ax_ctcvr_high, "CTCVR_permille", ctcvr_targets, ctcvr_label_fmt)
+add_labels(ax_ctcvr_low, "CTCVR_permille", ctcvr_targets, ctcvr_label_fmt)
 
 
 # =========================

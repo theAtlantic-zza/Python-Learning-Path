@@ -10,8 +10,6 @@ data = [
     # 月份, 优化目标, 日均消耗（元）, CTR（%）, CTCVR（‰）
 
     # 412 加企微微信客服
-    ["2025/11", "412", 144694.55, 1.08, 4.25],
-    ["2025/12", "412", 97067.18, 0.98, 5.03],
     ["2026/01", "412", 75084.66, 1.07, 4.99],
     ["2026/02", "412", 130381.28, 1.89, 9.70],
     ["2026/03", "412", 162583.40, 2.13, 10.01],
@@ -20,8 +18,6 @@ data = [
     ["2026/06", "412", 10722.56, 2.76, 3.90],
 
     # 405 表单预约
-    ["2025/11", "405", 6408.48, 2.42, 4.66],
-    ["2025/12", "405", 8928.34, 1.91, 3.08],
     ["2026/01", "405", 9054.62, 1.32, 4.79],
     ["2026/02", "405", 5709.03, 0.96, 1.12],
     ["2026/03", "405", 17313.36, 1.03, 2.11],
@@ -30,8 +26,6 @@ data = [
     ["2026/06", "405", 8267.96, 1.32, 2.54],
 
     # 204 下单
-    ["2025/11", "204", 127090.30, 2.53, 4.66],
-    ["2025/12", "204", 36348.41, 1.85, 5.63],
     ["2026/01", "204", 12990.18, 1.36, 7.07],
     ["2026/02", "204", 13158.40, 2.47, 5.71],
     ["2026/03", "204", 60566.32, 2.08, 6.64],
@@ -52,8 +46,6 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11",
-    "2025/12",
     "2026/01",
     "2026/02",
     "2026/03",
@@ -211,6 +203,38 @@ def draw_lines(ax, column):
         )
 
 
+def add_labels(ax, column, label_fmt):
+    y_min, y_max = ax.get_ylim()
+    for idx, target in enumerate(target_order):
+        target_df = (
+            df[df["优化目标"] == target]
+            .set_index("月份")
+            .reindex(month_order)
+        )
+        offset_y = 11 if idx % 2 == 0 else -13
+        va = "bottom" if offset_y > 0 else "top"
+        for xi, yi in zip(x, target_df[column]):
+            if pd.isna(yi) or yi < y_min or yi > y_max:
+                continue
+            ax.annotate(
+                label_fmt(yi),
+                xy=(xi, yi),
+                xytext=(0, offset_y),
+                textcoords="offset points",
+                ha="center",
+                va=va,
+                fontsize=8,
+                color=colors[target],
+                bbox=dict(
+                    boxstyle="round,pad=0.12",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=4
+            )
+
+
 def style_axis(ax):
     ax.grid(
         axis="y",
@@ -281,6 +305,10 @@ ax_spend.tick_params(
     labelbottom=False
 )
 
+add_labels(ax_spend, "日均消耗_万元", lambda v: f"{v:.1f}")
+
+add_labels(ax_spend, "日均消耗_万元", lambda v: f"{v:.1f}")
+
 
 # ==================================================
 # 7. CTR变化趋势
@@ -326,6 +354,10 @@ ax_ctr.tick_params(
     labelbottom=False
 )
 
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
 
 # ==================================================
 # 8. CTCVR变化趋势
@@ -364,6 +396,8 @@ ax_ctcvr.yaxis.set_major_formatter(
         lambda value, _: f"{value:.1f}‰"
     )
 )
+
+add_labels(ax_ctcvr, "CTCVR_permille", lambda v: f"{v:.1f}‰")
 
 
 # ==================================================

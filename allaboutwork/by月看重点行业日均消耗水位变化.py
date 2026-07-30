@@ -10,8 +10,6 @@ data = [
     # 月份, 行业, 日均消耗（元）, CTR（%）, CTCVR（‰）
 
     # 金融
-    ["2025/11", "金融", 826129.53, 2.45, 20.69],
-    ["2025/12", "金融", 1047371.21, 2.08, 13.82],
     ["2026/01", "金融", 2396794.32, 2.12, 12.05],
     ["2026/02", "金融", 1011806.63, 2.25, 10.64],
     ["2026/03", "金融", 1315699.84, 2.00, 12.11],
@@ -20,8 +18,6 @@ data = [
     ["2026/06", "金融", 2964195.81, 2.12, 7.40],
 
     # 汽车
-    ["2025/11", "汽车", 948943.19, 0.94, 72.38],
-    ["2025/12", "汽车", 777877.00, 0.97, 66.53],
     ["2026/01", "汽车", 579396.37, 1.22, 54.49],
     ["2026/02", "汽车", 321353.07, 1.20, 32.66],
     ["2026/03", "汽车", 786977.45, 1.06, 58.11],
@@ -30,8 +26,6 @@ data = [
     ["2026/06", "汽车", 753457.85, 0.97, 63.04],
 
     # 教育
-    ["2025/11", "教育", 285884.21, 1.64, 6.12],
-    ["2025/12", "教育", 147439.56, 1.02, 11.24],
     ["2026/01", "教育", 102081.18, 0.97, 10.14],
     ["2026/02", "教育", 149340.25, 1.63, 9.35],
     ["2026/03", "教育", 246031.18, 1.63, 9.40],
@@ -40,8 +34,6 @@ data = [
     ["2026/06", "教育", 197484.39, 1.32, 17.15],
 
     # 房家
-    ["2025/11", "房家", 732015.06, 1.40, 43.98],
-    ["2025/12", "房家", 649419.90, 1.42, 39.83],
     ["2026/01", "房家", 502485.32, 1.37, 41.41],
     ["2026/02", "房家", 242530.51, 1.39, 52.08],
     ["2026/03", "房家", 687725.47, 1.37, 72.10],
@@ -62,8 +54,6 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11",
-    "2025/12",
     "2026/01",
     "2026/02",
     "2026/03",
@@ -189,8 +179,8 @@ x = list(range(len(month_order)))
 # ==================================================
 # 4. 通用绘图函数
 # ==================================================
-def draw_industry_lines(ax, column):
-    for industry in industry_order:
+def draw_industry_lines(ax, column, label_fmt=None):
+    for idx, industry in enumerate(industry_order):
         industry_df = (
             df[df["行业"] == industry]
             .set_index("月份")
@@ -211,6 +201,32 @@ def draw_industry_lines(ax, column):
             label=industry,
             zorder=3
         )
+
+        if label_fmt is not None:
+            # 4行业轮流上/下、左右错位，避免拥挤
+            offset_table = [(0, 12, "bottom"), (0, -14, "top"),
+                            (0, 12, "bottom"), (0, -14, "top")]
+            dx, dy, va = offset_table[idx % 4]
+            for xi, yi in zip(x, industry_df[column]):
+                if pd.isna(yi):
+                    continue
+                ax.annotate(
+                    label_fmt(yi),
+                    xy=(xi, yi),
+                    xytext=(dx, dy),
+                    textcoords="offset points",
+                    ha="center",
+                    va=va,
+                    fontsize=8,
+                    color=colors[industry],
+                    bbox=dict(
+                        boxstyle="round,pad=0.12",
+                        fc="white",
+                        ec="none",
+                        alpha=0.85
+                    ),
+                    zorder=4
+                )
 
 
 def style_axis(ax):
@@ -281,7 +297,8 @@ fig_spend, ax_spend = plt.subplots(
 
 draw_industry_lines(
     ax_spend,
-    "日均消耗_万元"
+    "日均消耗_万元",
+    label_fmt=lambda v: f"{v:,.0f}"
 )
 
 style_axis(ax_spend)
@@ -297,6 +314,7 @@ ax_spend.set_ylabel(
     fontsize=15,
     labelpad=12
 )
+
 
 ax_spend.set_xlabel(
     "月份",
@@ -375,7 +393,8 @@ ax_ctr, ax_ctcvr = axes_rate
 # --------------------------------------------------
 draw_industry_lines(
     ax_ctr,
-    "CTR_pct"
+    "CTR_pct",
+    label_fmt=lambda v: f"{v:.2f}%"
 )
 
 style_axis(ax_ctr)
@@ -421,7 +440,8 @@ ax_ctr.tick_params(
 # --------------------------------------------------
 draw_industry_lines(
     ax_ctcvr,
-    "CTCVR_permille"
+    "CTCVR_permille",
+    label_fmt=lambda v: f"{v:.1f}‰"
 )
 
 style_axis(ax_ctcvr)

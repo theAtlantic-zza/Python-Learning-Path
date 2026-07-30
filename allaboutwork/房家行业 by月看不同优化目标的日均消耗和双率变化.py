@@ -10,8 +10,6 @@ data = [
     # 月份, 优化目标, 日均消耗（元）, CTR（%）, CTCVR（‰）
 
     # 409 确认意向
-    ["2025/11", "409", 48752.54, 1.23, 0.97],
-    ["2025/12", "409", 54073.79, 1.10, 1.11],
     ["2026/01", "409", 7457.10, 1.49, 1.53],
     ["2026/02", "409", 6926.59, 1.13, 0.77],
     ["2026/03", "409", 3430.14, 1.70, 0.94],
@@ -20,8 +18,6 @@ data = [
     ["2026/06", "409", 69086.01, 1.15, 1.04],
 
     # 405 表单预约
-    ["2025/11", "405", 495709.42, 1.35, 0.94],
-    ["2025/12", "405", 501223.13, 1.31, 1.01],
     ["2026/01", "405", 414229.33, 1.16, 0.89],
     ["2026/02", "405", 201619.46, 1.13, 0.78],
     ["2026/03", "405", 548746.64, 1.32, 1.11],
@@ -30,8 +26,6 @@ data = [
     ["2026/06", "405", 799165.64, 0.94, 0.74],
 
     # 10000 综合线索收集
-    ["2025/11", "10000", 124415.65, 1.15, 1.31],
-    ["2025/12", "10000", 62049.92, 1.29, 1.26],
     ["2026/01", "10000", 58158.66, 1.01, 0.95],
     ["2026/02", "10000", 18444.83, 1.10, 0.97],
     ["2026/03", "10000", 63201.10, 1.07, 1.08],
@@ -52,8 +46,6 @@ df = pd.DataFrame(
 )
 
 month_order = [
-    "2025/11",
-    "2025/12",
     "2026/01",
     "2026/02",
     "2026/03",
@@ -92,7 +84,7 @@ if duplicate_rows.any():
         ].to_string(index=False)
     )
 
-# 补齐“3个优化目标 × 8个月”
+# 补齐“3个优化目标 × 6个月”
 full_index = pd.MultiIndex.from_product(
     [target_order, month_order],
     names=["优化目标", "月份"]
@@ -244,6 +236,41 @@ def draw_lines(ax, column):
             markeredgewidth=1.3,
             zorder=3
         )
+
+
+def add_labels(ax, column, label_fmt):
+    y_min, y_max = ax.get_ylim()
+    for idx, target in enumerate(target_order):
+        target_df = (
+            df[df["优化目标"] == target]
+            .set_index("月份")
+            .reindex(month_order)
+        )
+        # 3条线轮流上/下错位
+        offset_y = 11 if idx % 2 == 0 else -13
+        va = "bottom" if offset_y > 0 else "top"
+        for xi, yi in zip(x, target_df[column]):
+            if pd.isna(yi):
+                continue
+            if yi < y_min or yi > y_max:
+                continue
+            ax.annotate(
+                label_fmt(yi),
+                xy=(xi, yi),
+                xytext=(0, offset_y),
+                textcoords="offset points",
+                ha="center",
+                va=va,
+                fontsize=8,
+                color=colors[target],
+                bbox=dict(
+                    boxstyle="round,pad=0.12",
+                    fc="white",
+                    ec="none",
+                    alpha=0.85
+                ),
+                zorder=4
+            )
 
 
 def style_axis(ax):
@@ -412,6 +439,16 @@ ax_spend_low.text(
     color="#777777"
 )
 
+# 断轴上下轴各自标注（值落在区间内才标）
+spend_label_fmt = lambda v: f"{v:.1f}"
+add_labels(ax_spend_high, "日均消耗_万元", spend_label_fmt)
+add_labels(ax_spend_low, "日均消耗_万元", spend_label_fmt)
+
+# 断轴上下轴各自标注（值落在区间内才标）
+spend_label_fmt = lambda v: f"{v:.1f}"
+add_labels(ax_spend_high, "日均消耗_万元", spend_label_fmt)
+add_labels(ax_spend_low, "日均消耗_万元", spend_label_fmt)
+
 
 # ==================================================
 # 8. CTR变化趋势
@@ -458,6 +495,10 @@ ax_ctr.tick_params(
     labelbottom=False
 )
 
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
+add_labels(ax_ctr, "CTR_pct", lambda v: f"{v:.2f}%")
+
 
 # ==================================================
 # 9. CTCVR变化趋势
@@ -498,6 +539,8 @@ ax_ctcvr.yaxis.set_major_formatter(
         lambda value, _: f"{value:.2f}‰"
     )
 )
+
+add_labels(ax_ctcvr, "CTCVR_permille", lambda v: f"{v:.2f}‰")
 
 
 # ==================================================
