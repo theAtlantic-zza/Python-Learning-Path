@@ -1,3 +1,10 @@
 # Python-Learning-Path 仓库约定
 
-处理本仓库的任务时，执行[文件保留与验收规则](.cursor/rules/task-acceptance.mdc)。课程作业的题目、数据、代码和结果见 [ghostwriting 作业索引](ghostwriting/README.md)。
+处理本仓库的任务时，执行[文件保留与验收规则](.cursor/rules/task-acceptance.mdc)。这门课的总入口为 [数据科学通识导论](数据科学通识导论/导学.md)，其他人的作业及零散需求见 [ghostwriting 索引](数据科学通识导论/ghostwriting/README.md)。
+
+- `Chapter1/`、`Chapter2/`、`Leetcode/`、`allaboutwork/` 保留用户原有学习和工作内容。课程文件统一收纳在 `数据科学通识导论/`。
+- 本人的课堂代码和练习放在课程的 `课堂与练习/`，本人的课程作业放在 `作业/`。其他人的作业仅放在课程的 `ghostwriting/`。
+- 张雨墨、张书源、高欣分别使用 `ghostwriting/<姓名>/`；不属于这三位同学的需求使用 `ghostwriting/其他需求/<题目>/`。双 Y 轴绘制和主成分分析属于其他需求，不是本人的作业。
+- 共用课件、模板和数据放在课程的 `inputs/`；某道题专用的原件放在该题的 `inputs/`。临时文件集中在课程的 `work/<任务>/`。
+- 桌面课程目录中的同名入口链接到仓库主文件。先读取链接真实位置，不再生成两份可分别修改的副本。
+- 用户确认验收后才提交对应范围并推送；文件整理本身不代表所有待验收作业均已验收。

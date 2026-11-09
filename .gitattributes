@@ -1,0 +1,3 @@
+# Preserve supplied input files byte for byte, including their line endings.
+数据科学通识导论/inputs/** -text whitespace=cr-at-eol
+数据科学通识导论/ghostwriting/**/inputs/** -text whitespace=cr-at-eol

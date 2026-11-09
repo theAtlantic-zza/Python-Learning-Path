@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>体验</title>
+<style>body{max-width:1100px;margin:40px auto;padding:0 24px;color:#222;background:#fff;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}h1{font-size:26px;margin-bottom:28px}h2{font-size:19px;font-weight:500;margin-top:30px}pre{margin:0;line-height:1.6;font-family:Menlo,Consolas,"Microsoft YaHei",monospace;font-size:14px;tab-size:4;white-space:pre;overflow-x:auto}.code,.output{border:1px solid #ddd;border-radius:3px;padding:18px;background:#fafafa}.output{background:#fff}@media print{body{max-width:none;margin:0;padding:0}pre{white-space:pre-wrap;overflow-wrap:anywhere}.code,.output{border-color:#ccc}h2{break-after:avoid}}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.code .hll { background-color: #ffffcc }
+.code { background: #f8f8f8; }
+.code .c { color: #3D7B7B; font-style: italic } /* Comment */
+.code .err { border: 1px solid #F00 } /* Error */
+.code .k { color: #008000; font-weight: bold } /* Keyword */
+.code .o { color: #666 } /* Operator */
+.code .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.code .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.code .cp { color: #9C6500 } /* Comment.Preproc */
+.code .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.code .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.code .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.code .gd { color: #A00000 } /* Generic.Deleted */
+.code .ge { font-style: italic } /* Generic.Emph */
+.code .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code .gr { color: #E40000 } /* Generic.Error */
+.code .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.code .gi { color: #008400 } /* Generic.Inserted */
+.code .go { color: #717171 } /* Generic.Output */
+.code .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.code .gs { font-weight: bold } /* Generic.Strong */
+.code .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.code .gt { color: #04D } /* Generic.Traceback */
+.code .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.code .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.code .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.code .kp { color: #008000 } /* Keyword.Pseudo */
+.code .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.code .kt { color: #B00040 } /* Keyword.Type */
+.code .m { color: #666 } /* Literal.Number */
+.code .s { color: #BA2121 } /* Literal.String */
+.code .na { color: #687822 } /* Name.Attribute */
+.code .nb { color: #008000 } /* Name.Builtin */
+.code .nc { color: #00F; font-weight: bold } /* Name.Class */
+.code .no { color: #800 } /* Name.Constant */
+.code .nd { color: #A2F } /* Name.Decorator */
+.code .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.code .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.code .nf { color: #00F } /* Name.Function */
+.code .nl { color: #767600 } /* Name.Label */
+.code .nn { color: #00F; font-weight: bold } /* Name.Namespace */
+.code .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.code .nv { color: #19177C } /* Name.Variable */
+.code .ow { color: #A2F; font-weight: bold } /* Operator.Word */
+.code .w { color: #BBB } /* Text.Whitespace */
+.code .mb { color: #666 } /* Literal.Number.Bin */
+.code .mf { color: #666 } /* Literal.Number.Float */
+.code .mh { color: #666 } /* Literal.Number.Hex */
+.code .mi { color: #666 } /* Literal.Number.Integer */
+.code .mo { color: #666 } /* Literal.Number.Oct */
+.code .sa { color: #BA2121 } /* Literal.String.Affix */
+.code .sb { color: #BA2121 } /* Literal.String.Backtick */
+.code .sc { color: #BA2121 } /* Literal.String.Char */
+.code .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.code .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.code .s2 { color: #BA2121 } /* Literal.String.Double */
+.code .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.code .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.code .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.code .sx { color: #008000 } /* Literal.String.Other */
+.code .sr { color: #A45A77 } /* Literal.String.Regex */
+.code .s1 { color: #BA2121 } /* Literal.String.Single */
+.code .ss { color: #19177C } /* Literal.String.Symbol */
+.code .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.code .fm { color: #00F } /* Name.Function.Magic */
+.code .vc { color: #19177C } /* Name.Variable.Class */
+.code .vg { color: #19177C } /* Name.Variable.Global */
+.code .vi { color: #19177C } /* Name.Variable.Instance */
+.code .vm { color: #19177C } /* Name.Variable.Magic */
+.code .il { color: #666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+<h1>体验</h1>
+<h2>代码</h2>
+<div class="code"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Series</span>
+<span class="n">heights</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;10&quot;</span><span class="p">:</span> <span class="mi">182</span><span class="p">,</span> <span class="s2">&quot;11&quot;</span><span class="p">:</span> <span class="mi">189</span><span class="p">,</span> <span class="s2">&quot;12&quot;</span><span class="p">:</span> <span class="mi">176</span><span class="p">,</span> <span class="s2">&quot;15&quot;</span><span class="p">:</span> <span class="mi">185</span><span class="p">,</span> <span class="s2">&quot;18&quot;</span><span class="p">:</span> <span class="mi">190</span><span class="p">}</span>
+<span class="n">player</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;11&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;18&quot;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="n">player</span> <span class="o">&gt;=</span> <span class="mi">185</span><span class="p">])</span>
+
+<span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;10&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">184</span>
+<span class="n">player</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">180</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+<span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;20&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">192</span>
+<span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;21&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">187</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+<span class="n">player</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;12&quot;</span><span class="p">,</span> <span class="s2">&quot;15&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+<span class="n">player</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># DataFrame</span>
+<span class="n">student</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+    <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">169</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">181</span><span class="p">],</span>
+    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">58</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">73</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">学生数据：</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">student</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="p">[[</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">condition</span> <span class="o">=</span> <span class="n">student</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">170</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">condition</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]])</span>
+
+<span class="n">student</span><span class="p">[</span><span class="s2">&quot;expense&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1300</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">1700</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+<span class="n">student</span><span class="p">[</span><span class="s2">&quot;expense&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1100</span>
+<span class="n">student</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">176</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+<span class="n">student</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">student</span><span class="p">[</span><span class="s2">&quot;expense&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;expense&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1300</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;expense&quot;</span><span class="p">))</span>
+<span class="n">student</span> <span class="o">=</span> <span class="n">student</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+</pre></div>
+
+<h2>运行结果</h2>
+<pre class="output">10    182
+11    189
+12    176
+15    185
+18    190
+dtype: int64
+Index([&#x27;10&#x27;, &#x27;11&#x27;, &#x27;12&#x27;, &#x27;15&#x27;, &#x27;18&#x27;], dtype=&#x27;object&#x27;)
+[182 189 176 185 190]
+189
+10    182
+18    190
+dtype: int64
+10    182
+11    189
+12    176
+dtype: int64
+11    189
+15    185
+18    190
+dtype: int64
+10    184
+11    180
+12    180
+15    185
+18    190
+dtype: int64
+10    184
+11    180
+12    180
+15    185
+18    190
+20    192
+21    187
+dtype: int64
+10    184
+11    180
+18    190
+20    192
+21    187
+dtype: int64
+184
+184
+
+学生数据：
+    age  height  weight
+1   18     169      58
+2   20     175      66
+3   19     181      73
+Index([1, 2, 3], dtype=&#x27;int64&#x27;)
+Index([&#x27;age&#x27;, &#x27;height&#x27;, &#x27;weight&#x27;], dtype=&#x27;object&#x27;)
+[[ 18 169  58]
+ [ 20 175  66]
+ [ 19 181  73]]
+175
+   height  weight
+1     169      58
+3     181      73
+   age  height
+1   18     169
+3   19     181
+   height  weight
+1     169      58
+2     175      66
+3     181      73
+   age  height
+2   20     175
+3   19     181
+   height  weight
+2     175      66
+3     181      73
+   age  height  weight  expense
+1   18     169      58     1300
+2   20     175      66     1500
+3   19     181      73     1700
+   age  height  weight  expense
+1   18     169      58     1100
+2   21     176      67      300
+3   19     181      73     1100
+   age  height  weight  expense
+1   18     169      58     1100
+2   21     176      67     1300
+3   19     181      73     1100
+   age  height  weight  expense
+2   21     176      67     1300
+3   19     181      73     1100
+   age  height  weight
+1   18     169      58
+2   21     176      67
+3   19     181      73
+   height  expense
+1     169     1100
+2     176     1300
+3     181     1100
+</pre>
+</body>
+</html>
