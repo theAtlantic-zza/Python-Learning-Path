@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>体验</title>
+<style>
+body { margin: 24px; color: #222; background: #fff; font-family: Arial, "PingFang SC", sans-serif; }
+h1 { margin: 0 0 20px; font-size: 22px; font-weight: 600; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
+code { font-family: Menlo, Consolas, "PingFang SC", monospace; font-size: 14px; line-height: 1.65; }
+</style>
+</head>
+<body>
+<h1>体验</h1>
+<pre><code>#Produce by zza
+import pandas as pd
+
+
+data_folder = &quot;/Users/zhaoziang/PycharmProjects/Python-Learning-Path/数据科学通识导论/inputs/课程资料/&quot;
+output_folder = &quot;/Users/zhaoziang/PycharmProjects/Python-Learning-Path/数据科学通识导论/work/2026-11-13_课前准备/我的/outputs/&quot;
+
+student = pd.read_csv(data_folder + &quot;student1.csv&quot;, index_col=None)
+print(&quot;默认索引，最后三行：\n&quot;, student.tail(3))
+print()
+
+student = pd.read_csv(data_folder + &quot;student1.csv&quot;, index_col=0)
+print(&quot;序号作为索引，前三行：\n&quot;, student.head(3))
+print()
+
+
+columns = [&quot;序号&quot;, &quot;性别&quot;, &quot;年龄&quot;, &quot;身高&quot;, &quot;体重&quot;, &quot;省份&quot;, &quot;成绩&quot;]
+student_txt = pd.read_csv(data_folder + &quot;student2.txt&quot;, sep=&quot;\t&quot;,
+                          header=None, names=columns, index_col=0)
+print(&quot;TXT前两行：\n&quot;, student_txt.head(2))
+print()
+
+
+data = [[19, 68, 170], [20, 65, 165], [18, 65, 175]]
+example = pd.DataFrame(data, index=[1, 2, 3], columns=[&quot;age&quot;, &quot;weight&quot;, &quot;height&quot;])
+example.to_csv(output_folder + &quot;体验数据.csv&quot;, index=False)
+print(&quot;保存的表格：\n&quot;, example)
+print()
+
+
+student_excel = pd.read_excel(data_folder + &quot;student3.xlsx&quot;,
+                              sheet_name=&quot;Group1&quot;, skiprows=3, index_col=0)
+print(&quot;Excel前两行：\n&quot;, student_excel.head(2))
+print()
+
+
+stu = pd.read_excel(data_folder + &quot;studentsInfo.xlsx&quot;, sheet_name=&quot;Group1&quot;,
+                    index_col=0)
+print(&quot;缺失值判断：\n&quot;, stu.isna())
+print()
+
+print(&quot;删除含缺失值的行：\n&quot;, stu.dropna())
+print()
+
+print(&quot;保留至少8项有效数据的行：\n&quot;, stu.dropna(thresh=8))
+print()
+
+
+filled = stu.fillna({&quot;年龄&quot;: 20, &quot;体重&quot;: stu[&quot;体重&quot;].mean()})
+print(&quot;填充年龄和体重：\n&quot;, filled)
+print()
+
+print(&quot;用上一行的数据填充：\n&quot;, stu.ffill())
+print()
+
+print(&quot;去除重复数据：\n&quot;, stu.drop_duplicates())
+print()
+
+
+scores = pd.Series([&quot;71&quot;, &quot;缺考&quot;, &quot;90&quot;])
+print(&quot;转换为数值：\n&quot;, pd.to_numeric(scores, errors=&quot;coerce&quot;))
+print()
+</code></pre>
+</body>
+</html>

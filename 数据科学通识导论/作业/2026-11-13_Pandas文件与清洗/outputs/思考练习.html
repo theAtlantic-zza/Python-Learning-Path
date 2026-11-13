@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>思考练习</title>
+<style>
+body { margin: 24px; color: #222; background: #fff; font-family: Arial, "PingFang SC", sans-serif; }
+h1 { margin: 0 0 20px; font-size: 22px; font-weight: 600; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
+code { font-family: Menlo, Consolas, "PingFang SC", monospace; font-size: 14px; line-height: 1.65; }
+</style>
+</head>
+<body>
+<h1>思考练习</h1>
+<pre><code>#Produce by zza
+import numpy as np
+import pandas as pd
+
+
+data_folder = &quot;/Users/zhaoziang/PycharmProjects/Python-Learning-Path/数据科学通识导论/inputs/课程资料/&quot;
+output_folder = &quot;/Users/zhaoziang/PycharmProjects/Python-Learning-Path/数据科学通识导论/work/2026-11-13_课前准备/我的/outputs/&quot;
+
+numbers = np.random.randint(10, 100, (50, 7))
+random_data = pd.DataFrame(numbers, columns=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;])
+random_data.to_csv(output_folder + &quot;随机数据.csv&quot;, index=False)
+print(&quot;第43页：随机表格\n&quot;, random_data)
+print()
+
+
+names = [&quot;flymiles&quot;, &quot;videogame&quot;, &quot;icecream&quot;, &quot;type&quot;]
+dating = pd.read_csv(data_folder + &quot;datingTestSet.csv&quot;, skiprows=2,
+                     header=None, names=names)
+print(&quot;第43页：交友数据前五条记录\n&quot;, dating.head(5))
+print()
+
+large_doses = dating[dating[&quot;type&quot;] == &quot;largeDoses&quot;]
+print(&quot;largeDoses的全部记录：\n&quot;, large_doses.to_string())
+print()
+
+dating.loc[dating[&quot;videogame&quot;] &gt; 10, &quot;videogame&quot;] = 10
+print(&quot;限制游戏时间后：\n&quot;, dating)
+print()
+
+
+stu = pd.read_excel(data_folder + &quot;studentsInfo.xlsx&quot;, sheet_name=&quot;Group1&quot;,
+                    index_col=0)
+stu[&quot;案例教学&quot;] = np.nan
+stu = stu.dropna(thresh=len(stu.columns) - 2)
+stu = stu.dropna(axis=1, how=&quot;all&quot;)
+print(&quot;第54页：数据清洗\n&quot;, stu)
+print()
+
+
+stu[&quot;体重&quot;] = stu[&quot;体重&quot;].fillna(stu[&quot;体重&quot;].mean())
+stu[&quot;成绩&quot;] = stu[&quot;成绩&quot;].fillna(stu[&quot;成绩&quot;].mean())
+stu[&quot;年龄&quot;] = stu[&quot;年龄&quot;].ffill()
+stu[&quot;月生活费&quot;] = stu[&quot;月生活费&quot;].fillna(stu[&quot;月生活费&quot;].median())
+print(&quot;第54页：数据填充\n&quot;, stu)
+print()
+</code></pre>
+</body>
+</html>
